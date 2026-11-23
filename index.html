@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FREE FIRE ESPORT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@600;800;900&family=Hind+Siliguri:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-dark: #030706;
+            --bg-alt: #060d0b;
+            --card-bg: rgba(7, 17, 14, 0.9);
+            --hacker-green: #00ff88;
+            --cyber-cyan: #00f0ff;
+            --fire-yellow: #ffb700;
+            --neon-red: #ff1e42;
+            --text-light: #e8fff4;
+            --text-muted: #9bc4b2;
+            --border-hack: rgba(0, 255, 136, 0.28);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Hind Siliguri', sans-serif;
+            overflow-x: hidden;
+            line-height: 1.65;
+        }
+
+        .mono-font {
+            font-family: 'Share Tech Mono', monospace;
+        }
+
+        @keyframes logoFloat {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(2deg); }
+        }
+
+        @keyframes hackGlowPulse {
+            0%, 100% {
+                box-shadow: 0 0 14px rgba(0, 255, 136, 0.45), 0 0 26px rgba(0, 240, 255, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 24px rgba(0, 255, 136, 0.85), 0 0 38px rgba(0, 240, 255, 0.35);
+            }
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-4px) scale(1.06); }
+        }
+
+        @keyframes scanLine {
+            0% { top: -15%; opacity: 0; }
+            50% { opacity: 0.75; }
+            100% { top: 115%; opacity: 0; }
+        }
+
+        .anim-logo {
+            animation: logoFloat 3.2s ease-in-out infinite, hackGlowPulse 2.6s ease-in-out infinite;
+            transition: transform 0.3s ease;
+        }
+
+        .anim-logo:hover {
+            transform: scale(1.12) rotate(-3deg);
+        }
+
+        .anim-icon {
+            animation: iconPulse 2.8s ease-in-out infinite;
+        }
+
+        #boot-loader {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, #071f17 0%, #020504 80%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            transition: opacity 0.65s ease, visibility 0.65s ease;
+        }
+
+        #boot-loader.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .boot-logo-box {
+            width: 110px;
+            height: 110px;
+            border-radius: 22px;
+            padding: 3px;
+            background: linear-gradient(135deg, var(--hacker-green), var(--cyber-cyan));
+            animation: logoFloat 1.8s ease-in-out infinite, hackGlowPulse 1.6s ease-in-out infinite;
+            margin-bottom: 16px;
+        }
+
+        .boot-logo-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 19px;
+        }
+
+        .boot-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--hacker-green);
+            text-shadow: 0 0 18px rgba(0, 255, 136, 0.6);
+        }
+
+        #matrix-canvas {
+            position: fixed;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            opacity: 0.22;
+            pointer-events: none;
+        }
+
+        .cyber-overlay {
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at 50% 0%, rgba(0, 255, 136, 0.08), transparent 65%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 74px;
+            padding: 0 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(3, 8, 6, 0.92);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--border-hack);
+            z-index: 1000;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .drawer-trigger {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--hacker-green);
+            color: var(--hacker-green);
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            transition: 0.25s ease;
+        }
+
+        .drawer-trigger:hover {
+            background: rgba(0, 255, 136, 0.22);
+            box-shadow: 0 0 18px rgba(0, 255, 136, 0.45);
+        }
+
+        .brand-link {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .brand-logo {
+            width: 44px;
+            height: 44px;
+            border-radius: 11px;
+            object-fit: cover;
+            border: 1.5px solid var(--hacker-green);
+        }
+
+        .brand-name {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.18rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--hacker-green), var(--cyber-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .drawer-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.78);
+            backdrop-filter: blur(6px);
+            z-index: 2500;
+            opacity: 0;
+            visibility: hidden;
+            transition: 0.3s ease;
+        }
+
+        .drawer-backdrop.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .side-drawer {
+            position: fixed;
+            top: 0;
+            left: -340px;
+            width: 315px;
+            max-width: 86vw;
+            height: 100vh;
+            background: linear-gradient(180deg, #071611 0%, #030706 100%);
+            border-right: 1px solid var(--hacker-green);
+            box-shadow: 18px 0 50px rgba(0, 0, 0, 0.9);
+            z-index: 3000;
+            padding: 22px 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            transition: left 0.38s cubic-bezier(0.22, 1, 0.36, 1);
+            overflow-y: auto;
+        }
+
+        .side-drawer.open { left: 0; }
+
+        .drawer-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.18);
+        }
+
+        .drawer-close {
+            width: 34px;
+            height: 34px;
+            border-radius: 9px;
+            background: rgba(255, 30, 66, 0.15);
+            border: 1px solid var(--neon-red);
+            color: #fff;
+            font-size: 1.2rem;
+            cursor: pointer;
+        }
+
+        .drawer-links {
+            list-style: none;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+        }
+
+        .drawer-links a {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            padding: 12px 15px;
+            border-radius: 11px;
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 600;
+            background: rgba(0, 255, 136, 0.04);
+            border: 1px solid rgba(0, 255, 136, 0.12);
+            transition: 0.25s ease;
+        }
+
+        .drawer-links a:hover {
+            background: rgba(0, 255, 136, 0.14);
+            border-color: var(--hacker-green);
+            color: var(--hacker-green);
+            transform: translateX(5px);
+        }
+
+        .btn-hack {
+            padding: 11px 22px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: #03100a;
+            background: linear-gradient(135deg, var(--hacker-green), var(--cyber-cyan));
+            border: none;
+            border-radius: 9px;
+            cursor: pointer;
+            text-decoration: none;
+            box-shadow: 0 0 22px rgba(0, 255, 136, 0.45);
+            transition: 0.28s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.7px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-hack:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 0 34px rgba(0, 255, 136, 0.8);
+        }
+
+        .btn-outline-hack {
+            padding: 11px 22px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--hacker-green);
+            background: rgba(0, 255, 136, 0.06);
+            border: 1.5px solid var(--hacker-green);
+            border-radius: 9px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.28s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-outline-hack:hover {
+            background: rgba(0, 255, 136, 0.16);
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.35);
+        }
+
+        .hero-section {
+            min-height: 100vh;
+            padding: 108px 5% 64px;
+            display: grid;
+            grid-template-columns: 1fr 1.15fr;
+            gap: 36px;
+            align-items: center;
+            perspective: 1200px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 15px 5px 5px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--hacker-green);
+            border-radius: 99px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--hacker-green);
+            margin-bottom: 18px;
+        }
+
+        .hero-badge img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            animation: logoFloat 2.6s ease-in-out infinite;
+        }
+
+        .hero-copy h1 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.75rem;
+            line-height: 1.18;
+            font-weight: 900;
+            margin-bottom: 16px;
+            text-transform: uppercase;
+        }
+
+        .hero-copy h1 span {
+            background: linear-gradient(90deg, var(--hacker-green), var(--cyber-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-copy p {
+            color: var(--text-muted);
+            font-size: 1.06rem;
+            margin-bottom: 24px;
+        }
+
+        .hero-actions {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .terminal-dashboard {
+            background: linear-gradient(150deg, rgba(7, 20, 16, 0.95), rgba(3, 8, 6, 0.98));
+            border: 1px solid var(--hacker-green);
+            border-radius: 20px;
+            padding: 22px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 0 0 38px rgba(0, 255, 136, 0.2);
+            position: relative;
+            overflow: hidden;
+            transform-style: preserve-3d;
+            transition: transform 0.2s ease-out;
+        }
+
+        .terminal-scan {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 32px;
+            background: linear-gradient(180deg, transparent, rgba(0, 255, 136, 0.08), transparent);
+            animation: scanLine 4.2s linear infinite;
+            pointer-events: none;
+        }
+
+        .term-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(0, 255, 136, 0.2);
+            margin-bottom: 16px;
+        }
+
+        .term-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .term-brand img {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1.5px solid var(--hacker-green);
+        }
+
+        .term-dots {
+            display: flex;
+            gap: 6px;
+        }
+
+        .term-dots span {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .term-tabs {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            background: rgba(0, 255, 136, 0.05);
+            padding: 6px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+        }
+
+        .term-tab {
+            padding: 9px 6px;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: var(--text-muted);
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.86rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.25s ease;
+        }
+
+        .term-tab.active {
+            background: linear-gradient(135deg, var(--hacker-green), var(--cyber-cyan));
+            color: #03100a;
+        }
+
+        .term-pane { display: none; animation: fadeUp 0.3s ease; }
+        .term-pane.active { display: block; }
+
+        .stat-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .stat-box {
+            background: rgba(0, 255, 136, 0.04);
+            border: 1px solid rgba(0, 255, 136, 0.2);
+            border-radius: 12px;
+            padding: 13px;
+        }
+
+        .stat-box span {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            display: block;
+        }
+
+        .stat-box strong {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.25rem;
+            margin-top: 4px;
+            display: block;
+        }
+
+        .term-log {
+            background: rgba(0, 0, 0, 0.45);
+            border-left: 3px solid var(--hacker-green);
+            border-radius: 8px;
+            padding: 12px 14px;
+            font-size: 0.92rem;
+            color: #d7f9ea;
+            margin-bottom: 16px;
+        }
+
+        .gateway-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+
+        .gateway-pill {
+            padding: 10px 8px;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 700;
+            font-size: 0.85rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+
+        .section { padding: 76px 5%; }
+
+        .section-alt {
+            background: var(--bg-alt);
+            border-top: 1px solid rgba(0, 255, 136, 0.12);
+            border-bottom: 1px solid rgba(0, 255, 136, 0.12);
+        }
+
+        .section-heading {
+            text-align: center;
+            max-width: 720px;
+            margin: 0 auto 44px;
+        }
+
+        .section-heading h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.1rem;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .section-heading h2 span { color: var(--hacker-green); }
+        .section-heading p { color: var(--text-muted); font-size: 1.04rem; }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 22px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .hack-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-hack);
+            border-radius: 16px;
+            padding: 22px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .hack-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--cyber-cyan);
+            box-shadow: 0 16px 36px rgba(0, 255, 136, 0.18);
+        }
+
+        .card-logo {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            object-fit: cover;
+            border: 1.5px solid var(--hacker-green);
+            margin-bottom: 12px;
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 1px solid var(--hacker-green);
+            color: var(--hacker-green);
+            display: grid;
+            place-items: center;
+            font-size: 1.45rem;
+            margin-bottom: 12px;
+        }
+
+        .rule-num {
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.85rem;
+            color: var(--cyber-cyan);
+            background: rgba(0, 240, 255, 0.1);
+            border: 1px solid rgba(0, 240, 255, 0.35);
+            padding: 3px 10px;
+            border-radius: 99px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .hack-card h3 {
+            font-size: 1.18rem;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .rule-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 7px;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .rule-list li::before {
+            content: "▸ ";
+            color: var(--hacker-green);
+            font-weight: bold;
+        }
+
+        .warning-panel {
+            margin-top: 30px;
+            background: linear-gradient(135deg, rgba(255, 30, 66, 0.14), rgba(6, 12, 10, 0.96));
+            border: 1.5px solid var(--neon-red);
+            border-radius: 18px;
+            padding: 26px;
+            box-shadow: 0 0 32px rgba(255, 30, 66, 0.2);
+        }
+
+        .warning-panel h3 {
+            font-family: 'Orbitron', sans-serif;
+            color: #ff6b85;
+            font-size: 1.25rem;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .warning-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px;
+            margin-top: 12px;
+        }
+
+        .warning-item {
+            background: rgba(0, 0, 0, 0.4);
+            border-left: 3px solid var(--neon-red);
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 0.94rem;
+            color: #f3dce2;
+        }
+
+        .download-banner {
+            margin: 24px 5% 72px;
+            padding: 50px 28px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, rgba(0, 255, 136, 0.14), rgba(0, 240, 255, 0.1), rgba(5, 12, 10, 0.97));
+            border: 1px solid var(--hacker-green);
+            text-align: center;
+            box-shadow: 0 22px 55px rgba(0, 0, 0, 0.8), 0 0 35px rgba(0, 255, 136, 0.18);
+        }
+
+        .download-banner img {
+            width: 78px;
+            height: 78px;
+            border-radius: 18px;
+            object-fit: cover;
+            border: 2px solid var(--hacker-green);
+            margin-bottom: 14px;
+        }
+
+        .download-banner h2 {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 2.05rem;
+            margin-bottom: 10px;
+        }
+
+        .download-banner p {
+            max-width: 660px;
+            margin: 0 auto 24px;
+            color: var(--text-muted);
+        }
+
+        footer {
+            text-align: center;
+            padding: 28px 5%;
+            border-top: 1px solid var(--border-hack);
+            color: var(--text-muted);
+            font-size: 0.94rem;
+        }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 980px) {
+            .hero-section {
+                grid-template-columns: 1fr;
+                padding-top: 102px;
+                text-align: center;
+            }
+            .hero-badge { margin: 0 auto 16px; }
+            .hero-copy h1 { font-size: 2.2rem; }
+            .hero-actions { justify-content: center; }
+        }
+
+        @media (max-width: 520px) {
+            .brand-name { font-size: 0.98rem; }
+            .term-dots { display: none; }
+            .btn-hack { padding: 10px 13px; font-size: 0.72rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="boot-loader">
+        <div class="boot-logo-box">
+            <img src="free-fire.png" alt="Free Fire Esport">
+        </div>
+        <div class="boot-title">FREE FIRE ESPORT</div>
+    </div>
+
+    <canvas id="matrix-canvas"></canvas>
+    <div class="cyber-overlay"></div>
+
+    <div class="drawer-backdrop" id="drawerBackdrop" onclick="toggleDrawer(false)"></div>
+    <aside class="side-drawer" id="sideDrawer">
+        <div>
+            <div class="drawer-head">
+                <div class="brand-link">
+                    <img src="free-fire.png" alt="Free Fire Esport" class="brand-logo anim-logo" style="width:36px;height:36px;">
+                    <span class="brand-name" style="font-size:1rem;">FREE FIRE ESPORT</span>
+                </div>
+                <button class="drawer-close" onclick="toggleDrawer(false)">&times;</button>
+            </div>
+
+            <ul class="drawer-links">
+                <li><a href="#home" onclick="toggleDrawer(false)">ড্যাশবোর্ড</a></li>
+                <li><a href="#categories" onclick="toggleDrawer(false)">টুর্নামেন্ট ও সিকিউরিটি</a></li>
+                <li><a href="#terms-policy" onclick="toggleDrawer(false)">নিয়ম ও শর্তাবলী</a></li>
+                <li><a href="#security-warning" onclick="toggleDrawer(false)">সতর্কতা</a></li>
+                <li><a href="#download" onclick="toggleDrawer(false)">অ্যাপ ডাউনলোড</a></li>
+            </ul>
+        </div>
+
+        <div style="background:rgba(0,255,136,0.08); border:1px solid var(--hacker-green); border-radius:14px; padding:14px; text-align:center;">
+            <img src="free-fire.png" alt="Free Fire Esport" class="anim-logo" style="width:46px;height:46px;border-radius:12px;object-fit:cover;margin-bottom:8px;">
+            <button class="btn-hack" style="width:100%;" onclick="downloadApp(); toggleDrawer(false);">Download App</button>
+        </div>
+    </aside>
+
+    <header>
+        <div class="header-left">
+            <button class="drawer-trigger" onclick="toggleDrawer(true)">☰</button>
+            <a href="#home" class="brand-link">
+                <img src="free-fire.png" alt="Free Fire Esport" class="brand-logo anim-logo">
+                <span class="brand-name">FREE FIRE ESPORT</span>
+            </a>
+        </div>
+        <a href="#download" class="btn-hack">Download App</a>
+    </header>
+
+    <section class="hero-section" id="home">
+        <div class="hero-copy">
+            <div class="hero-badge">
+                <img src="free-fire.png" alt="Free Fire Esport">
+                <span class="mono-font">FREE FIRE ESPORT</span>
+            </div>
+            <h1>FREE FIRE <span>ESPORT</span></h1>
+            <p>অফিশিয়াল অ্যাপ ডাউনলোড করুন এবং নিয়মাবলী মেনে সেরা গেমারদের একজন হয়ে উঠুন।</p>
+            <div class="hero-actions">
+                <button class="btn-hack" onclick="downloadApp()">Download App</button>
+                <a href="#terms-policy" class="btn-outline-hack">নিয়ম ও শর্তাবলী</a>
+            </div>
+        </div>
+
+        <div class="terminal-dashboard" id="hackerDashboard">
+            <div class="terminal-scan"></div>
+            <div class="term-topbar">
+                <div class="term-brand">
+                    <img src="free-fire.png" alt="Free Fire Esport" class="anim-logo">
+                    <div>
+                        <span class="mono-font" style="font-size:0.75rem; color:var(--cyber-cyan);">FREE FIRE ESPORT</span>
+                        <h3 style="font-family:'Orbitron'; font-size:1rem; color:var(--hacker-green);">DASHBOARD</h3>
+                    </div>
+                </div>
+                <div class="term-dots">
+                    <span style="background:#ff5f56;"></span>
+                    <span style="background:#ffbd2e;"></span>
+                    <span style="background:#27c93f;"></span>
+                </div>
+            </div>
+
+            <div class="term-tabs">
+                <button class="term-tab active" onclick="switchTerm('wallet', this)">My Wallet</button>
+                <button class="term-tab" onclick="switchTerm('withdraw', this)">Withdraw</button>
+                <button class="term-tab" onclick="switchTerm('refer', this)">Refer & Earn</button>
+            </div>
+
+            <div id="term-wallet" class="term-pane active">
+                <div class="stat-grid-2">
+                    <div class="stat-box">
+                        <span>WINNING CASH</span>
+                        <strong style="color:var(--hacker-green);">৳ 60</strong>
+                    </div>
+                    <div class="stat-box">
+                        <span>DEPOSIT CASH</span>
+                        <strong style="color:var(--cyber-cyan);">৳ 500</strong>
+                    </div>
+                </div>
+                <div class="term-log">
+                    <span class="mono-font" style="color:var(--hacker-green);">TOTAL BALANCE: BDT ৳ 560</span>
+                </div>
+            </div>
+
+            <div id="term-withdraw" class="term-pane">
+                <div class="term-log" style="border-left-color:var(--fire-yellow);">
+                    <span class="mono-font" style="color:var(--fire-yellow);">MINIMUM WITHDRAW: 500৳</span>
+                </div>
+                <div class="gateway-row">
+                    <div class="gateway-pill" style="border-color:#e2136e; color:#ff6aa8;">bKash</div>
+                    <div class="gateway-pill" style="border-color:#8c3494; color:#e08ce8; animation-delay:0.4s;">Rocket</div>
+                    <div class="gateway-pill" style="border-color:#f6921e; color:#ffb700; animation-delay:0.8s;">Nagad</div>
+                </div>
+            </div>
+
+            <div id="term-refer" class="term-pane">
+                <div class="term-log" style="border-left-color:var(--cyber-cyan);">
+                    <span class="mono-font" style="color:var(--cyber-cyan);">REFER BONUS: ৳10 | SIGNUP BONUS: ৳5</span>
+                </div>
+                <div class="stat-box" style="text-align:center; border-style:dashed; border-color:var(--hacker-green); margin-bottom:16px;">
+                    <span>REFER & EARN</span>
+                    <strong style="color:var(--hacker-green); font-size:0.98rem;">৳10 + ৳5</strong>
+                </div>
+            </div>
+
+            <button class="btn-hack" style="width:100%;" onclick="downloadApp()">Download App</button>
+        </div>
+    </section>
+
+    <section class="section section-alt" id="categories">
+        <div class="section-heading">
+            <h2>SYSTEM <span>CATEGORIES</span></h2>
+        </div>
+
+        <div class="grid-3">
+            <div class="hack-card">
+                <img src="free-fire.png" alt="Free Fire Esport" class="card-logo anim-logo">
+                <h3>🏆 টুর্নামেন্ট সিস্টেম</h3>
+                <p style="color:var(--text-muted); font-size:0.95rem;">
+                    নিয়মিত টুর্নামেন্ট ও পুরস্কার ব্যবস্থাপনা।
+                </p>
+            </div>
+
+            <div class="hack-card">
+                <div class="card-icon anim-icon">🛡️</div>
+                <h3>💻 সিকিউরিটি সিস্টেম</h3>
+                <p style="color:var(--text-muted); font-size:0.95rem;">
+                    গেম হ্যাকিং ও প্রতারণামূলক কার্যকলাপ প্রতিরোধ ব্যবস্থা।
+                </p>
+            </div>
+
+            <div class="hack-card">
+                <div class="card-icon anim-icon" style="animation-delay:0.5s;">💳</div>
+                <h3>💰 ওয়ালেট ও পেমেন্ট</h3>
+                <p style="color:var(--text-muted); font-size:0.95rem;">
+                    নগদ ও বিকাশের মাধ্যমে টাকা উত্তোলন সুবিধা।
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" id="terms-policy">
+        <div class="section-heading">
+            <h2>Free Fire Esport - <span>নিয়ম ও শর্তাবলী</span></h2>
+        </div>
+
+        <div class="grid-4">
+            <div class="hack-card">
+                <span class="rule-num">01</span>
+                <h3>১. নতুন ব্যবহারকারী</h3>
+                <ul class="rule-list">
+                    <li>অ্যাকাউন্ট তৈরি করার সময় সঠিক এবং যথাযথ তথ্য প্রদান করতে হবে।</li>
+                    <li>প্রথমবার ডিপোজিট বাধ্যতামূলক।</li>
+                    <li>একবার ডিপোজিট করার পর জেতা টাকা ব্যবহার করে ভবিষ্যতে টুর্নামেন্টে অংশগ্রহণ করা যাবে।</li>
+                    <li>আপনার অ্যাকাউন্টের তথ্য শুধুমাত্র আপনার নিয়ন্ত্রণে রাখুন।</li>
+                </ul>
+            </div>
+
+            <div class="hack-card">
+                <span class="rule-num">02</span>
+                <h3>২. টুর্নামেন্টে অংশগ্রহণ</h3>
+                <ul class="rule-list">
+                    <li>টুর্নামেন্টে অংশগ্রহণের আগে সমস্ত নিয়ম ভালোভাবে বুঝে নিন।</li>
+                    <li>নির্ধারিত সময় অনুযায়ী টুর্নামেন্ট শুরু হবে, তাই সময়মতো প্রস্তুত থাকতে হবে।</li>
+                    <li>প্রতিটি টুর্নামেন্টের রেজাল্ট চূড়ান্ত এবং তা নিয়ে কোনো অভিযোগ গ্রহণযোগ্য নয়।</li>
+                </ul>
+            </div>
+
+            <div class="hack-card">
+                <span class="rule-num">03</span>
+                <h3>৩. পাসওয়ার্ড নিরাপত্তা</h3>
+                <ul class="rule-list">
+                    <li>আপনার পাসওয়ার্ড বা ব্যক্তিগত তথ্য কারো সঙ্গে শেয়ার করবেন না।</li>
+                    <li>কারো সঙ্গে পাসওয়ার্ড বা ব্যক্তিগত তথ্য শেয়ার করলে, তা থেকে সৃষ্ট সমস্যা বা ক্ষতির জন্য অ্যাডমিন বা সাপোর্ট টিম কোনোভাবেই দায়ী থাকবে না।</li>
+                    <li>যদি কেউ আপনার অ্যাকাউন্টের তথ্য চায় বা ফিশিং লিঙ্ক পাঠায়, সাথে সাথে টেলিগ্রাম সাপোর্ট টিমে রিপোর্ট করুন।</li>
+                    <li>অ্যাকাউন্ট নিরাপত্তা সম্পূর্ণ আপনার নিজের দায়িত্বে।</li>
+                </ul>
+            </div>
+
+            <div class="hack-card">
+                <span class="rule-num">04</span>
+                <h3>৪. পুরস্কার বিতরণ</h3>
+                <ul class="rule-list">
+                    <li>জেতা টাকা সরাসরি আপনার অ্যাকাউন্টে যুক্ত হবে।</li>
+                    <li>নগদ বা বিকাশের মাধ্যমে টাকা উত্তোলন করা যাবে।</li>
+                </ul>
+            </div>
+
+            <div class="hack-card">
+                <span class="rule-num">05</span>
+                <h3>৫. রেফারেল বোনাস</h3>
+                <ul class="rule-list">
+                    <li>রেফারেল লিঙ্ক ব্যবহার করে বন্ধুদের আমন্ত্রণ জানালে অতিরিক্ত বোনাস পাওয়া যাবে।</li>
+                    <li>রেফারেল বোনাস অন্য কোনো অফারের সঙ্গে যুক্ত করা যাবে না।</li>
+                </ul>
+            </div>
+
+            <div class="hack-card">
+                <span class="rule-num">06</span>
+                <h3>৬. আচরণবিধি</h3>
+                <ul class="rule-list">
+                    <li>গেম হ্যাকিং বা অন্যায় সুবিধা গ্রহণ কঠোরভাবে নিষিদ্ধ।</li>
+                    <li>প্রতারণামূলক কার্যকলাপ প্রমাণিত হলে অ্যাকাউন্ট স্থায়ীভাবে বন্ধ করে দেওয়া হবে।</li>
+                    <li>সম্মানজনক ভাষায় এডমিন এবং অন্য খেলোয়াড়দের সঙ্গে যোগাযোগ করতে হবে।</li>
+                </ul>
+            </div>
+
+            <div class="hack-card">
+                <span class="rule-num">07</span>
+                <h3>৭. সাপোর্ট ব্যবস্থা</h3>
+                <ul class="rule-list">
+                    <li>যেকোনো সমস্যা বা প্রশ্নের জন্য টেলিগ্রাম সাপোর্ট ব্যবহার করুন।</li>
+                    <li>সাপোর্ট টিম আপনার তথ্য যাচাই করে সমস্যার সমাধান করবে।</li>
+                </ul>
+            </div>
+
+            <div class="hack-card">
+                <span class="rule-num">08</span>
+                <h3>৮. শর্তাবলী আপডেট</h3>
+                <ul class="rule-list">
+                    <li>এই নিয়মাবলী যেকোনো সময় পরিবর্তিত হতে পারে।</li>
+                    <li>আপডেট সম্পর্কে তথ্য টেলিগ্রামের মাধ্যমে জানানো হবে।</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="warning-panel" id="security-warning">
+            <h3>🚨 সতর্কতা</h3>
+            <div class="warning-grid">
+                <div class="warning-item">আপনার নাম, ফোন নম্বর, ইমেইল, বা পাসওয়ার্ড কারো সঙ্গে শেয়ার করবেন না।</div>
+                <div class="warning-item">ব্যক্তিগত তথ্য শেয়ার করা থেকে বিরত থাকুন।</div>
+                <div class="warning-item">ফিশিং লিঙ্ক বা সন্দেহজনক কার্যকলাপ দেখলে সাথে সাথে টেলিগ্রাম সাপোর্ট টিমে রিপোর্ট করুন।</div>
+                <div class="warning-item">অ্যাকাউন্টের তথ্য নিজের নিয়ন্ত্রণে রাখুন এবং সর্বোচ্চ সতর্কতার সঙ্গে ব্যবহার করুন।</div>
+            </div>
+            <p style="margin-top:16px; color:var(--hacker-green); font-weight:700;">
+                Free Fire Esport-এ অংশগ্রহণ করুন এবং সেরা গেমারদের একজন হয়ে উঠুন!
+            </p>
+            <p style="margin-top:4px; color:var(--text-muted); font-weight:600;">
+                Free Fire Esport অপারেশন টিম।
+            </p>
+        </div>
+    </section>
+
+    <div class="download-banner" id="download">
+        <img src="free-fire.png" alt="Free Fire Esport" class="anim-logo">
+        <h2>FREE FIRE ESPORT</h2>
+        <p>অফিশিয়াল অ্যাপ ডাউনলোড করুন।</p>
+        <button class="btn-hack" style="font-size:1rem; padding:14px 34px;" onclick="downloadApp()">Download App</button>
+    </div>
+
+    <footer>
+        <p>Free Fire Esport অপারেশন টিম।</p>
+    </footer>
+
+    <script>
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('boot-loader').classList.add('hidden');
+            }, 1000);
+        });
+
+        function toggleDrawer(open) {
+            document.getElementById('sideDrawer').classList.toggle('open', open);
+            document.getElementById('drawerBackdrop').classList.toggle('open', open);
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') toggleDrawer(false);
+        });
+
+        function switchTerm(tabName, btn) {
+            document.querySelectorAll('.term-pane').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.term-tab').forEach(t => t.classList.remove('active'));
+            document.getElementById('term-' + tabName).classList.add('active');
+            btn.classList.add('active');
+        }
+
+        const termPanel = document.getElementById('hackerDashboard');
+        document.addEventListener('mousemove', (e) => {
+            if (window.innerWidth > 980 && termPanel) {
+                const xAxis = (window.innerWidth / 2 - e.pageX) / 55;
+                const yAxis = (window.innerHeight / 2 - e.pageY) / 55;
+                termPanel.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
+            }
+        });
+
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        const chars = "01アイウエオカキクケコFFESPORT#$/<>";
+        const fontSize = 15;
+        let columns = 0;
+        let drops = [];
+
+        function initMatrix() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+            columns = Math.floor(canvas.width / fontSize);
+            drops = Array(columns).fill(1);
+        }
+
+        window.addEventListener('resize', initMatrix);
+        initMatrix();
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(3, 7, 6, 0.08)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#00ff88";
+            ctx.font = fontSize + "px 'Share Tech Mono', monospace";
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+            requestAnimationFrame(drawMatrix);
+        }
+        drawMatrix();
+
+        function downloadApp() {
+            window.location.href = "https://t.me/freefireesport283/83";
+        }
+    </script>
+</body>
+</html>
